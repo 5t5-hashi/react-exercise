@@ -1,0 +1,58 @@
+.appLayout {
+  background: #f6f7fb;
+  height: 100vh;
+}
+
+.appSider {
+  background: #f7f9fc;
+  border-right: 1px solid #e6eaf0;
+  color: #334155;
+  width: 250px;
+}
+
+.appHeader {
+  background: #ffffff;
+  border-bottom: 1px solid #e6eaf0;
+  color: #1f2937;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.appContent {
+  background: #f6f7fb;
+  padding: 16px;
+}
+
+.appContentInner {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(31, 41, 55, 0.08);
+  height: calc(100vh - 64px - 50px - 32px);
+  padding: 16px;
+}
+
+.appFooter {
+  background: #ffffff;
+  color: #64748b;
+  border-top: 1px solid #e6eaf0;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+  text-align: center;
+}
+
+:global(.ant-menu) {
+  background: transparent;
+}
+
+:global(.ant-menu-item) {
+  color: #334155;
+}
+
+:global(.ant-menu-item-selected) {
+  background-color: #eaf1ff;
+  color: #1f2937;
+}
+
