@@ -10,7 +10,6 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <ErrorPage />,
     // 相当于vue的路由守卫，在进入路由前执行，全局守卫的替代：把 loader 放在根布局路由（ / ），就相当于全局保护其所有子路由
     loader: () => {
       let token = useAuthStore.getState().token
@@ -38,6 +37,7 @@ const router = createBrowserRouter([
       { path: 'welcome', element: <Welcome /> },
     ],
   },
+  // 错误路由页面
   { path: '*', element: <ErrorPage /> },
 ])
 

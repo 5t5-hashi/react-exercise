@@ -1,21 +1,28 @@
-import { Button, Input, Form, Checkbox, Typography, message } from "antd";
+import { Button, Input, Form, Typography, message, ConfigProvider } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.js";
 import styles from "./index.module.scss";
+import { login as loginApi } from "@/api/user.js";
 
 export default function Login() {
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
+  const setUserInfo = useAuthStore((state) => state.setUserInfo);
   const [loading, setLoading] = useState(false);
   const [msgApi, contextHolder] = message.useMessage();
 
   async function onFinish(values) {
     setLoading(true);
     try {
-      const token = values?.info?.username || "token";
-      setToken(token);
+      const payload = {
+        username: values?.info?.username,
+        password: values?.info?.password,
+      };
+      const resp = await loginApi(payload);
+      setToken(resp?.token || payload.username || "token");
+      setUserInfo(resp?.userInfo || { name: '', role: '' });
       msgApi.success("登录成功");
       navigate("/welcome");
     } finally {
@@ -24,10 +31,23 @@ export default function Login() {
   }
 
   return (
-    <div className={styles.page}>
-      {contextHolder}
-      <div className={styles.card}>
-        <Typography.Text className={styles.title}>欢迎登录</Typography.Text>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorBgContainer: 'rgba(255,255,255,0.06)',
+          colorBorder: 'rgba(255,255,255,0.2)',
+          colorText: '#ffffff',
+          colorTextPlaceholder: 'rgba(255,255,255,0.6)',
+          colorPrimary: '#4044ED',
+        },
+      }}
+    >
+      <div className={styles.page}>
+        {contextHolder}
+        <div className={styles.ellipsePrimaryLarge} />
+        <div className={styles.ellipseSecondarySmall} />
+        <div className={styles.card}>
+          <Typography.Text className={styles.title}>LOGIN</Typography.Text>
 
         <Form
           className={styles.form}
@@ -38,7 +58,7 @@ export default function Login() {
         >
           <Form.Item
             name={["info","username"]}
-            label="用户名"
+            label={<span className={styles.label}>Username</span>}
             rules={[{ required: true, message: "请输入用户名" }]}
           >
             <Input
@@ -49,7 +69,7 @@ export default function Login() {
           </Form.Item>
           <Form.Item
             name={["info","password"]}
-            label="密码"
+            label={<span className={styles.label}>Password</span>}
             rules={[{ required: true, message: "请输入密码" }]}
           >
             <Input.Password
@@ -60,14 +80,14 @@ export default function Login() {
           </Form.Item>
           <Form.Item>
             <div className={styles.footer}>
-              <Checkbox defaultChecked>记住我</Checkbox>
               <Button type="primary" htmlType="submit" loading={loading}>
-                登录
+                login
               </Button>
             </div>
           </Form.Item>
         </Form>
+        </div>
       </div>
-    </div>
+    </ConfigProvider>
   );
 }

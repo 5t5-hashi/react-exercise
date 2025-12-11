@@ -5,13 +5,13 @@ export const useAuthStore = create(
   persist(
     (set, get) => ({
       token: null,
-      user: null,
+      userInfo: null,
       setToken: t => set({ token: t }),
       setUser: u => set({ user: u }),
-      clearAuth: () => set({ token: null, user: null }),
+      setUserInfo: u => set({ userInfo: u }),
+      clearAuth: () => set({ token: null, userInfo: null }),
       isAuthenticated: () => !!get().token,
     }),
     { name: 'auth-store' }
   )
 )
-

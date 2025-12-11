@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/auth.js'
 import styles from './index.module.scss'
 
 export default function Welcome() {
-  const username = useAuthStore(s => s.token)
+  const username = useAuthStore(s => s.userInfo?.name)
   const clearAuth = useAuthStore(s => s.clearAuth)
   const navigate = useNavigate()
 
