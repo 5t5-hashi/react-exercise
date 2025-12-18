@@ -3,6 +3,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.js";
+import { useMenuStore } from "@/stores/menu.js";
 import styles from "./index.module.scss";
 import { login as loginApi } from "@/api/user.js";
 
@@ -10,6 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
   const setUserInfo = useAuthStore((state) => state.setUserInfo);
+  const setMenuList = useMenuStore((state) => state.setMenuList);
   const [loading, setLoading] = useState(false);
   const [msgApi, contextHolder] = message.useMessage();
 
@@ -23,6 +25,7 @@ export default function Login() {
       const resp = await loginApi(payload);
       setToken(resp?.token || payload.username || "token");
       setUserInfo(resp?.userInfo || { name: '', role: '' });
+      setMenuList(resp?.menuList || []);
       msgApi.success("登录成功");
       navigate("/welcome");
     } finally {

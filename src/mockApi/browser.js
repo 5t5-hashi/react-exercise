@@ -1,5 +1,6 @@
 import { setupWorker } from 'msw/browser'
-import { handlers } from './login.jsx'
+import { login } from './login.js'
+import { dashboard } from './dashboard.js'  
 
-export const worker = setupWorker(...handlers)
+export const worker = setupWorker(...login, ...dashboard)
 
