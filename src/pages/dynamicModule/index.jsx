@@ -6,7 +6,7 @@ import { Skeleton } from 'antd';
 
 // ** ：递归匹配多级目录0 层或多层
 // * ：仅匹配单层目录名，不递归
-const modules = import.meta.glob('/src/pages/**/*.jsx')
+const modules = import.meta.glob('/src/pages/**/*.jsx', { eager: true })
 
 // 递归遍历菜单列表，提取所有路由路径
 function flattenMenuPaths(list) {
@@ -54,12 +54,17 @@ export default function DynamicModule() {
 
   var allowList = flattenMenuPaths(menus || [])
   var file = pathToFile(pathname)
-  var loader = modules[file]
+  
+  console.log('DynamicModule Debug:', { pathname, file, hasLoader: !!modules[file] })
 
-  if (!isAllowedPath(pathname, allowList) || !loader) {
+  var module = modules[file]
+
+  if (!isAllowedPath(pathname, allowList) || !module) {
     return <ErrorPage />
   }
 
-  var Lazy = React.lazy(loader)
-  return <Suspense fallback={<div className="p-4"><Skeleton /></div>}><Lazy /></Suspense>
+  // Eager 模式下，modules[file] 直接就是模块对象，module.default 就是组件
+  var Component = module.default
+  
+  return <Component />
 }
