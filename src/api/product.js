@@ -24,10 +24,40 @@ export function deleteBrand(id) {
 }
 
 //更新品牌
-export function updateBrand(id, data) {
-  return request(`/api/brands/${id}`, {
+export function updateBrand(data) {
+  return request(`/api/brands`, {
     method: 'PUT',
     data,
   })
 }
 
+//获取分类列表
+export function getCategories(data) {
+  return request('/api/categories', {
+    method: 'GET',
+    params: data,
+  })
+}
+
+//新增分类
+export function addCategory(data) {
+  return request('/api/categories', {
+    method: 'POST',
+    data,
+  })
+}
+
+//删除分类
+export function deleteCategory(id) {
+  return request(`/api/categories/${id}`, {
+    method: 'DELETE',
+  })
+}
+
+//更新分类
+export function updateCategory(data) {
+  return request(`/api/categories`, {
+    method: 'PUT',
+    data,
+  })
+}
